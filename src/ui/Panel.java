@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.GridLayout;
 
@@ -17,11 +18,12 @@ import widgets.WarningWidget;
 public class Panel extends JPanel {
 	private JSlider temperatureSlider;
 	private JSlider airPollutionSlider;
+	private JSlider firePresenceSlider;
 	
 	private float fontSize = 20f;
 
 	public Panel(JLabel warningLabel, final Widget ambientWidget) {			
-		setLayout(new GridLayout(3, 2)); // 3 rows, 2 columns
+		setLayout(new GridLayout(4, 2)); // 3 rows, 2 columns
 		
 		add(new JLabel(AmbientWidget.TEMPERATURE) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(temperatureSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
@@ -62,6 +64,21 @@ public class Panel extends JPanel {
 			});
 			setOpaque(true); // to allow background color to show
 			setMajorTickSpacing(10);
+			setPaintTicks(true);
+			setPaintLabels(true);
+		}});
+		
+		add(new JLabel(AmbientWidget.FIRE_PRESENCE) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(firePresenceSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 1)) {{
+			addChangeListener(new ChangeListener() {
+				@Override
+				public void stateChanged(ChangeEvent evt) {
+					int firePresence = (int)firePresenceSlider.getValue();
+					
+					ambientWidget.updateData(AmbientWidget.FIRE_PRESENCE, firePresence);				}
+			});
+			setOpaque(true); // to allow background color to show
+			setMajorTickSpacing(1);
 			setPaintTicks(true);
 			setPaintLabels(true);
 		}});

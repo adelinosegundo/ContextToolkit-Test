@@ -21,7 +21,7 @@ public class AmbientEnactor extends Enactor {
 
 	public static final int TEMPERATURE_THRESHOLD = 35;
 	public static final int AIR_POLLUTION_THRESHOLD = 15;
-	
+	public static final int FIRE_PRESENCE_THRESHOLD = 1;
 	public AmbientEnactor(AbstractQueryItem<?,?> inWidgetQuery, AbstractQueryItem<?,?> outWidgetQuery) {
 		this(new AbstractQueryItem<?,?>[] {inWidgetQuery}, new AbstractQueryItem<?,?>[] {outWidgetQuery});
 	}
@@ -40,7 +40,7 @@ public class AmbientEnactor extends Enactor {
 						new AttributeComparison(AttributeComparison.Comparison.GREATER)
 				),
 				RuleQueryItem.instance(
-						new NonConstantAttributeElement(AttributeNameValue.instance(AmbientWidget.FIRE_PRESENCE, true)), 
+						new NonConstantAttributeElement(AttributeNameValue.instance(AmbientWidget.FIRE_PRESENCE, FIRE_PRESENCE_THRESHOLD)), 
 						new AttributeComparison(AttributeComparison.Comparison.EQUAL)
 				)
 		);

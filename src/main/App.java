@@ -10,20 +10,28 @@ import context.arch.discoverer.query.AbstractQueryItem;
 import context.arch.enactor.Enactor;
 import context.arch.widget.Widget;
 import context.arch.widget.WidgetXmlParser;
-import enactors.AmbientEnactor;
+import enactors.AirPollutionEnactor;
+import enactors.FirePresenceEnactor;
+import enactors.TemperatureEnactor;
 import services.WarningService;
 import ui.Panel;
-import widgets.AmbientWidget;
+import widgets.AirPollutionWidget;
+import widgets.FirePresenceWidget;
+import widgets.TemperatureWidget;
 import widgets.WarningWidget;
 
 public class App {
 	
 	public static final String ambient = "Ambient";
 	
-	protected Widget ambientWidget;
+	protected Widget temperatureWidget;
+	protected Widget airPollutionWidget;
+	protected Widget firePresenceWidget;
 	protected Widget warningWidget;
 	
-	protected Enactor ambientEneactor;
+	protected Enactor temperatureEneactor;
+	protected Enactor airPollutionEneactor;
+	protected Enactor firePresenceEneactor;
 	
 	protected Panel ui;
 	protected WarningService warningService;
@@ -35,14 +43,22 @@ public class App {
 	public App() {
 		super();
 		
-		ambientWidget = new AmbientWidget(ambient);
+		temperatureWidget = new TemperatureWidget(ambient);
+		airPollutionWidget = new AirPollutionWidget(ambient);
+		firePresenceWidget = new FirePresenceWidget(ambient);
 		warningWidget = new WarningWidget(ambient);
 		warningService = new WarningService(warningWidget);
 		warningWidget.addService(warningService);
-		AbstractQueryItem<?,?> ambientWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(ambientWidget);
+		AbstractQueryItem<?,?> temperatureWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(temperatureWidget);
+		AbstractQueryItem<?,?> airPollutionWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(airPollutionWidget);
+		AbstractQueryItem<?,?> firePresenceWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(firePresenceWidget);
 		AbstractQueryItem<?,?> warningWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(warningWidget);
-		ambientEneactor = new AmbientEnactor(ambientWidgetQuery, warningWidgetQuery);
-		ui = new Panel(warningService.warningLabel, ambientWidget);
+		
+		temperatureEneactor = new TemperatureEnactor(temperatureWidgetQuery, warningWidgetQuery);
+		temperatureEneactor = new AirPollutionEnactor(airPollutionWidgetQuery, warningWidgetQuery);
+		temperatureEneactor = new FirePresenceEnactor(firePresenceWidgetQuery, warningWidgetQuery);
+		
+		ui = new Panel(warningService.warningLabel, temperatureWidget, airPollutionWidget, firePresenceWidget);
 	}
 	
 	public static void main(String[] args) {

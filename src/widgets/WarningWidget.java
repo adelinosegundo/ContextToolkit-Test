@@ -1,8 +1,11 @@
 package widgets;
 
+import java.util.ArrayList;
+
 import context.arch.storage.Attribute;
 import context.arch.storage.AttributeNameValue;
 import context.arch.widget.Widget;
+import notification.Notifier;
 
 public class WarningWidget extends Widget {
 	
@@ -16,9 +19,12 @@ public class WarningWidget extends Widget {
 	
 	private String ambient;
 	
+	private ArrayList<Notifier> notifiers;
+	
 	public WarningWidget(String ambient) {
 		super(CLASSNAME, CLASSNAME);
 		this.ambient = ambient;
+		this.notifiers = new ArrayList<Notifier>();
 		super.start(true);
 	}
 	
@@ -31,6 +37,16 @@ public class WarningWidget extends Widget {
 		// constant attributes
 		addAttribute(AttributeNameValue.instance(AMBIENT, ambient), true);
 		
+	}
+	
+	public void addNotifier(Notifier notifier){
+		notifiers.add(notifier);
+	}
+	
+	public void sendNotification(){
+		for(Notifier notifier : notifiers){
+			notifier.sendNotification();
+		}
 	}
 
 }

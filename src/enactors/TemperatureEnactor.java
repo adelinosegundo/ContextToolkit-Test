@@ -14,34 +14,28 @@ import context.arch.storage.AttributeNameValue;
 import context.arch.storage.Attributes;
 import context.arch.widget.Widget;
 import context.arch.widget.Widget.WidgetData;
-import widgets.AmbientWidget;
+import widgets.AirPollutionWidget;
+import widgets.FirePresenceWidget;
+import widgets.TemperatureWidget;
 import widgets.WarningWidget;
 
-public class AmbientEnactor extends Enactor {
+public class TemperatureEnactor extends Enactor {
 
 	public static final int TEMPERATURE_THRESHOLD = 35;
 	public static final int AIR_POLLUTION_THRESHOLD = 15;
 	public static final int FIRE_PRESENCE_THRESHOLD = 1;
-	public AmbientEnactor(AbstractQueryItem<?,?> inWidgetQuery, AbstractQueryItem<?,?> outWidgetQuery) {
+	public TemperatureEnactor(AbstractQueryItem<?,?> inWidgetQuery, AbstractQueryItem<?,?> outWidgetQuery) {
 		this(new AbstractQueryItem<?,?>[] {inWidgetQuery}, new AbstractQueryItem<?,?>[] {outWidgetQuery});
 	}
 	
 	@SuppressWarnings("serial")
-	public AmbientEnactor(AbstractQueryItem<?,?>[] inWidgetQuery, AbstractQueryItem<?,?>[] outWidgetQuery) {
+	public TemperatureEnactor(AbstractQueryItem<?,?>[] inWidgetQuery, AbstractQueryItem<?,?>[] outWidgetQuery) {
 		super(inWidgetQuery, outWidgetQuery, WarningWidget.WARNING, "");
 		
 		AbstractQueryItem<?, ?> warningQI = new ORQueryItem(
 				RuleQueryItem.instance(
-						new NonConstantAttributeElement(AttributeNameValue.instance(AmbientWidget.TEMPERATURE, TEMPERATURE_THRESHOLD)), 
+						new NonConstantAttributeElement(AttributeNameValue.instance(TemperatureWidget.TEMPERATURE, TEMPERATURE_THRESHOLD)), 
 						new AttributeComparison(AttributeComparison.Comparison.GREATER)
-				),
-				RuleQueryItem.instance(
-						new NonConstantAttributeElement(AttributeNameValue.instance(AmbientWidget.AIR_POLLUTION, AIR_POLLUTION_THRESHOLD)), 
-						new AttributeComparison(AttributeComparison.Comparison.GREATER)
-				),
-				RuleQueryItem.instance(
-						new NonConstantAttributeElement(AttributeNameValue.instance(AmbientWidget.FIRE_PRESENCE, FIRE_PRESENCE_THRESHOLD)), 
-						new AttributeComparison(AttributeComparison.Comparison.EQUAL)
 				)
 		);
 		EnactorReference er = new AmbientEnactorReference( 
@@ -71,7 +65,7 @@ public class AmbientEnactor extends Enactor {
 	private class AmbientEnactorReference extends EnactorReference {
 
 		public AmbientEnactorReference(AbstractQueryItem<?,?> conditionQuery, Boolean outcomeValue) {
-			super(AmbientEnactor.this, conditionQuery, outcomeValue.toString());
+			super(TemperatureEnactor.this, conditionQuery, outcomeValue.toString());
 		}
 		
 		@Override

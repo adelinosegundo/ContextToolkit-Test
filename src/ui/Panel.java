@@ -12,7 +12,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import context.arch.widget.Widget;
-import widgets.AmbientWidget;
+import widgets.AirPollutionWidget;
+import widgets.FirePresenceWidget;
+import widgets.TemperatureWidget;
 import widgets.WarningWidget;
 
 public class Panel extends JPanel {
@@ -22,17 +24,17 @@ public class Panel extends JPanel {
 	
 	private float fontSize = 20f;
 
-	public Panel(JLabel warningLabel, final Widget ambientWidget) {			
+	public Panel(JLabel warningLabel, final Widget temperatureWidget, final Widget airPollutionWidget, final Widget firePresenceWidget) {			
 		setLayout(new GridLayout(4, 2)); // 3 rows, 2 columns
 		
-		add(new JLabel(AmbientWidget.TEMPERATURE) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(new JLabel(TemperatureWidget.TEMPERATURE) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(temperatureSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
 			addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent evt) {
 					int temperature = (int)temperatureSlider.getValue();
 					
-					ambientWidget.updateData(AmbientWidget.TEMPERATURE, temperature);
+					temperatureWidget.updateData(TemperatureWidget.TEMPERATURE, temperature);
 					// set color to represent brightness level
 					double double_temperature = temperature;
 					Double red_value= (double_temperature/40)*255;
@@ -46,14 +48,14 @@ public class Panel extends JPanel {
 			setPaintLabels(true);
 		}});
 		
-		add(new JLabel(AmbientWidget.AIR_POLLUTION) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(new JLabel(AirPollutionWidget.AIR_POLLUTION) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(airPollutionSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
 			addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent evt) {
 					int airPollution = (int)airPollutionSlider.getValue();
 					
-					ambientWidget.updateData(AmbientWidget.AIR_POLLUTION, airPollution);
+					airPollutionWidget.updateData(AirPollutionWidget.AIR_POLLUTION, airPollution);
 					
 					// set color to represent brightness level
 					double double_temperature = airPollution;
@@ -68,14 +70,14 @@ public class Panel extends JPanel {
 			setPaintLabels(true);
 		}});
 		
-		add(new JLabel(AmbientWidget.FIRE_PRESENCE) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(new JLabel(FirePresenceWidget.FIRE_PRESENCE) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(firePresenceSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 1)) {{
 			addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent evt) {
 					int firePresence = (int)firePresenceSlider.getValue();
 					
-					ambientWidget.updateData(AmbientWidget.FIRE_PRESENCE, firePresence);				}
+					firePresenceWidget.updateData(FirePresenceWidget.FIRE_PRESENCE, firePresence);				}
 			});
 			setOpaque(true); // to allow background color to show
 			setMajorTickSpacing(1);
@@ -89,9 +91,12 @@ public class Panel extends JPanel {
 		 * Init state of widgets
 		 */
 		int temperature = (int)temperatureSlider.getValue();
-		ambientWidget.updateData(AmbientWidget.TEMPERATURE, temperature);
+		temperatureWidget.updateData(TemperatureWidget.TEMPERATURE, temperature);
 		
 		int airPollution = (int)airPollutionSlider.getValue();
-		ambientWidget.updateData(AmbientWidget.AIR_POLLUTION, airPollution);
+		airPollutionWidget.updateData(AirPollutionWidget.AIR_POLLUTION, airPollution);
+		
+		int firePresence = (int)firePresenceSlider.getValue();
+		firePresenceWidget.updateData(FirePresenceWidget.FIRE_PRESENCE, firePresence);
 	}
 }

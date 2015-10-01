@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.text.BadLocationException;
 
 import context.arch.comm.DataObject;
 import context.arch.service.Service;
@@ -14,7 +16,7 @@ import context.arch.widget.Widget;
 import widgets.WarningWidget;
 
 public class TemperatureWarningService extends Service {
-	public JLabel warningLabel;
+	public JTextArea warningTextArea;
 
 	@SuppressWarnings("serial")
 	public TemperatureWarningService(final Widget widget) {
@@ -32,10 +34,10 @@ public class TemperatureWarningService extends Service {
 		/*
 		 * set up light label (for use in a UI)
 		 */
-		warningLabel = new JLabel("0") {{
-			setHorizontalAlignment(JLabel.RIGHT);
+		warningTextArea = new JTextArea("") {{
 			setBorder(BorderFactory.createEtchedBorder());
-			
+			setEditable(false);
+			setAutoscrolls(true);
 			setOpaque(true); // to allow background color to show
 			// set color to represent light level
 			setBackground(Color.white); // initially dark
@@ -44,8 +46,26 @@ public class TemperatureWarningService extends Service {
 	
 	@Override
 	public DataObject execute(ServiceInput serviceInput) {
-		boolean warning_value = serviceInput.getInput().getAttributeValue(WarningWidget.WARNING_TEMPERATURE);
-		warningLabel.setText(String.valueOf(warning_value));	
+		String warning_value = String.valueOf(serviceInput.getInput().getAttributeValue(WarningWidget.WARNING_TEMPERATURE));
+		
+		int last  = warningTextArea.getLineCount() - 1;
+		int start;
+		int end;
+		String lastLine = "";
+		
+		try {
+			if (last > 0){
+				start = warningTextArea.getLineStartOffset(last-1);
+				end = warningTextArea.getLineEndOffset(last);
+				lastLine = warningTextArea.getText().substring(start, end-1);
+			}	
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (!warning_value.equals(lastLine))
+			warningTextArea.append(warning_value + "\n");	
+		
 		return new DataObject(); // no particular info to return
 	}
 }

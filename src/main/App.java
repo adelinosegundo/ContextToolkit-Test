@@ -60,8 +60,8 @@ public class App {
 		warningWidget.addService(fireWarningService);
 		warningWidget.addService(airPollutionWarningService);
 		
-		((WarningWidget) warningWidget).getNotificationSubject().addObserver(new EmailNotifier());
-		((WarningWidget) warningWidget).getNotificationSubject().addObserver(new SMSNotifier());
+//		((WarningWidget) warningWidget).getNotificationSubject().addObserver(new EmailNotifier());
+//		((WarningWidget) warningWidget).getNotificationSubject().addObserver(new SMSNotifier());
 		
 		AbstractQueryItem<?,?> temperatureWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(temperatureWidget);
 		AbstractQueryItem<?,?> airPollutionWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(airPollutionWidget);
@@ -72,7 +72,7 @@ public class App {
 		temperatureEneactor = new AirPollutionEnactor(airPollutionWidgetQuery, warningWidgetQuery);
 		temperatureEneactor = new FirePresenceEnactor(firePresenceWidgetQuery, warningWidgetQuery);
 		
-		ui = new Panel(fireWarningService.warningLabel, airPollutionWarningService.warningLabel, temperatureWarningService.warningLabel, temperatureWidget, airPollutionWidget, firePresenceWidget);
+		ui = new Panel(fireWarningService.warningTextArea, airPollutionWarningService.warningTextArea, temperatureWarningService.warningTextArea, temperatureWidget, airPollutionWidget, firePresenceWidget);
 	}
 	
 	public static void main(String[] args) {

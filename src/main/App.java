@@ -13,7 +13,11 @@ import context.arch.widget.WidgetXmlParser;
 import enactors.AirPollutionEnactor;
 import enactors.FirePresenceEnactor;
 import enactors.TemperatureEnactor;
-import services.WarningService;
+import notification.EmailNotifier;
+import notification.SMSNotifier;
+import services.FireWarningService;
+import services.AirPollutionWarningService;
+import services.TemperatureWarningService;
 import ui.Panel;
 import widgets.AirPollutionWidget;
 import widgets.FirePresenceWidget;
@@ -34,11 +38,10 @@ public class App {
 	protected Enactor firePresenceEneactor;
 	
 	protected Panel ui;
-	protected WarningService warningService;
-
-
-
 	
+	protected FireWarningService fireWarningService;
+	protected AirPollutionWarningService airPollutionWarningService;
+	protected TemperatureWarningService temperatureWarningService;	
 
 	public App() {
 		super();
@@ -47,8 +50,19 @@ public class App {
 		airPollutionWidget = new AirPollutionWidget(ambient);
 		firePresenceWidget = new FirePresenceWidget(ambient);
 		warningWidget = new WarningWidget(ambient);
-		warningService = new WarningService(warningWidget);
-		warningWidget.addService(warningService);
+		
+		
+		airPollutionWarningService = new AirPollutionWarningService(warningWidget);
+		temperatureWarningService = new TemperatureWarningService(warningWidget);
+		fireWarningService = new FireWarningService(warningWidget);
+		
+		warningWidget.addService(temperatureWarningService);
+		warningWidget.addService(fireWarningService);
+		warningWidget.addService(airPollutionWarningService);
+		
+//		((WarningWidget) warningWidget).getNotificationSubject().addObserver(new EmailNotifier());
+//		((WarningWidget) warningWidget).getNotificationSubject().addObserver(new SMSNotifier());
+		
 		AbstractQueryItem<?,?> temperatureWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(temperatureWidget);
 		AbstractQueryItem<?,?> airPollutionWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(airPollutionWidget);
 		AbstractQueryItem<?,?> firePresenceWidgetQuery = WidgetXmlParser.createWidgetSubscriptionQuery(firePresenceWidget);
@@ -58,7 +72,7 @@ public class App {
 		temperatureEneactor = new AirPollutionEnactor(airPollutionWidgetQuery, warningWidgetQuery);
 		temperatureEneactor = new FirePresenceEnactor(firePresenceWidgetQuery, warningWidgetQuery);
 		
-		ui = new Panel(warningService.warningLabel, temperatureWidget, airPollutionWidget, firePresenceWidget);
+		ui = new Panel(fireWarningService.warningTextArea, airPollutionWarningService.warningTextArea, temperatureWarningService.warningTextArea, temperatureWidget, airPollutionWidget, firePresenceWidget);
 	}
 	
 	public static void main(String[] args) {
@@ -69,7 +83,7 @@ public class App {
 		JFrame frame = new JFrame("ContextToolkit");
 		frame.add(app.ui);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(new Dimension(300, 200));
+		frame.setSize(new Dimension(600, 400));
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}

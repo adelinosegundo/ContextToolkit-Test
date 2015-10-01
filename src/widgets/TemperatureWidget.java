@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import context.arch.storage.Attribute;
 import context.arch.storage.AttributeNameValue;
 import context.arch.widget.Widget;
-import notification.Notifier;
 
 public class TemperatureWidget extends Widget {
 	public static final String CLASSNAME = TemperatureWidget.class.getName();

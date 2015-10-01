@@ -30,7 +30,7 @@ public class FirePresenceEnactor extends Enactor {
 	
 	@SuppressWarnings("serial")
 	public FirePresenceEnactor(AbstractQueryItem<?,?>[] inWidgetQuery, AbstractQueryItem<?,?>[] outWidgetQuery) {
-		super(inWidgetQuery, outWidgetQuery, WarningWidget.WARNING, "");
+		super(inWidgetQuery, outWidgetQuery, WarningWidget.WARNING_FIRE, "");
 		
 		AbstractQueryItem<?, ?> warningQI = new ORQueryItem(
 				RuleQueryItem.instance(
@@ -42,9 +42,9 @@ public class FirePresenceEnactor extends Enactor {
 				warningQI, 
 				WarningWidget.WARNING_ON
 		);
-		er.addServiceInput(new ServiceInput("WarningService", "WarningControl",
+		er.addServiceInput(new ServiceInput("FireWarningService", "WarningControl",
 				new Attributes() {{
-					addAttribute(WarningWidget.WARNING, Boolean.class);
+					addAttribute(WarningWidget.WARNING_FIRE, Boolean.class);
 				}}));
 		addReference(er);
 		
@@ -52,9 +52,9 @@ public class FirePresenceEnactor extends Enactor {
 				new ElseQueryItem(warningQI), 
 				WarningWidget.WARNING_OFF
 		);
-		er.addServiceInput(new ServiceInput("WarningService", "WarningControl",
+		er.addServiceInput(new ServiceInput("FireWarningService", "WarningControl",
 				new Attributes() {{
-					addAttribute(WarningWidget.WARNING, Boolean.class);
+					addAttribute(WarningWidget.WARNING_FIRE, Boolean.class);
 				}}));
 		
 		addReference(er);
@@ -80,7 +80,7 @@ public class FirePresenceEnactor extends Enactor {
 				warning = false;
 			}
 			
-			data.setAttributeValue(WarningWidget.WARNING, warning);
+			data.setAttributeValue(WarningWidget.WARNING_FIRE, warning);
 			outAtts.putAll(data.toAttributes());
 			
 	        return outAtts;

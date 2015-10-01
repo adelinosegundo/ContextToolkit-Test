@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -24,8 +25,8 @@ public class Panel extends JPanel {
 	
 	private float fontSize = 20f;
 
-	public Panel(JLabel warningLabel, final Widget temperatureWidget, final Widget airPollutionWidget, final Widget firePresenceWidget) {			
-		setLayout(new GridLayout(4, 2)); // 3 rows, 2 columns
+	public Panel(JTextArea fireWarningTextArea, JTextArea airPollutionWarningTextArea, JTextArea temperatureWarningTextArea, final Widget temperatureWidget, final Widget airPollutionWidget, final Widget firePresenceWidget) {			
+		setLayout(new GridLayout(3, 3)); // 3 rows, 2 columns
 		
 		add(new JLabel(TemperatureWidget.TEMPERATURE) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(temperatureSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
@@ -47,6 +48,7 @@ public class Panel extends JPanel {
 			setPaintTicks(true);
 			setPaintLabels(true);
 		}});
+		add(temperatureWarningTextArea);		
 		
 		add(new JLabel(AirPollutionWidget.AIR_POLLUTION) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(airPollutionSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
@@ -69,6 +71,7 @@ public class Panel extends JPanel {
 			setPaintTicks(true);
 			setPaintLabels(true);
 		}});
+		add(airPollutionWarningTextArea);
 		
 		add(new JLabel(FirePresenceWidget.FIRE_PRESENCE) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(firePresenceSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 1)) {{
@@ -84,9 +87,7 @@ public class Panel extends JPanel {
 			setPaintTicks(true);
 			setPaintLabels(true);
 		}});
-		
-		add(new JLabel(WarningWidget.WARNING) {{ setFont(getFont().deriveFont(fontSize)); }});
-		add(warningLabel);
+		add(fireWarningTextArea);
 		/*
 		 * Init state of widgets
 		 */

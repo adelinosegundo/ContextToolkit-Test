@@ -4,6 +4,7 @@ import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,13 +24,13 @@ public class Panel extends JPanel {
 	private JSlider airPollutionSlider;
 	private JSlider firePresenceSlider;
 	
-	private float fontSize = 20f;
+	private float fontSize = 16f;
 
 	public Panel(JTextArea fireWarningTextArea, JTextArea airPollutionWarningTextArea, JTextArea temperatureWarningTextArea, final Widget temperatureWidget, final Widget airPollutionWidget, final Widget firePresenceWidget) {			
 		setLayout(new GridLayout(3, 3)); // 3 rows, 2 columns
 		
-		add(new JLabel(TemperatureWidget.TEMPERATURE) {{ setFont(getFont().deriveFont(fontSize)); }});
-		add(temperatureSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
+		add(new JLabel("Temperature (ºC)") {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(temperatureSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, -40, 50)) {{
 			addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent evt) {
@@ -37,9 +38,9 @@ public class Panel extends JPanel {
 					
 					temperatureWidget.updateData(TemperatureWidget.TEMPERATURE, temperature);
 					// set color to represent brightness level
-					double double_temperature = temperature;
-					Double red_value= (double_temperature/40)*255;
-					Double other_values= (1.0-(double_temperature/40))*255;
+					double double_temperature = temperature + 40;
+					Double red_value= (double_temperature/90)*255;
+					Double other_values= (1.0-(double_temperature/90))*255;
 					setBackground(new Color(red_value.intValue(), other_values.intValue(), other_values.intValue()));
 				}
 			});
@@ -47,11 +48,12 @@ public class Panel extends JPanel {
 			setMajorTickSpacing(10);
 			setPaintTicks(true);
 			setPaintLabels(true);
+			setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 		}});
 		add(temperatureWarningTextArea);		
 		
-		add(new JLabel(AirPollutionWidget.AIR_POLLUTION) {{ setFont(getFont().deriveFont(fontSize)); }});
-		add(airPollutionSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
+		add(new JLabel("Air Pollution") {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(airPollutionSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 300)) {{
 			addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent evt) {
@@ -60,20 +62,24 @@ public class Panel extends JPanel {
 					airPollutionWidget.updateData(AirPollutionWidget.AIR_POLLUTION, airPollution);
 					
 					// set color to represent brightness level
-					double double_temperature = airPollution;
-					Double red_value= (double_temperature/40)*255;
-					Double other_values= (1.0-(double_temperature/40))*255;
-					setBackground(new Color(red_value.intValue(), other_values.intValue(), other_values.intValue()));
+					double double_temperature = airPollution / 3;
+					Double red_value = (255 * double_temperature) / 100;
+					Double green_value = (255 * (100 - double_temperature)) / 100;
+					Double blue_value = (double) 0;
+					Double other_values= (1.0-(double_temperature/201))*255;
+					setBackground(new Color(red_value.intValue(), green_value.intValue(), blue_value.intValue()));
 				}
 			});
 			setOpaque(true); // to allow background color to show
-			setMajorTickSpacing(10);
+			setMajorTickSpacing(50);
 			setPaintTicks(true);
 			setPaintLabels(true);
+			setBorder(BorderFactory.createMatteBorder(20, 0, 20, 20, new Color(238, 238, 238)));
+			setBackground(new Color((255 * 0) / 100, (255 * (100 - 0)) / 100, 0));
 		}});
 		add(airPollutionWarningTextArea);
 		
-		add(new JLabel(FirePresenceWidget.FIRE_PRESENCE) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(new JLabel("Fire Presence") {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(firePresenceSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 1)) {{
 			addChangeListener(new ChangeListener() {
 				@Override
@@ -86,8 +92,10 @@ public class Panel extends JPanel {
 			setMajorTickSpacing(1);
 			setPaintTicks(true);
 			setPaintLabels(true);
+			setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 		}});
 		add(fireWarningTextArea);
+		
 		/*
 		 * Init state of widgets
 		 */

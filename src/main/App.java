@@ -4,6 +4,8 @@ package main;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 import context.arch.discoverer.Discoverer;
 import context.arch.discoverer.query.AbstractQueryItem;
@@ -73,17 +75,18 @@ public class App {
 		temperatureEneactor = new FirePresenceEnactor(firePresenceWidgetQuery, warningWidgetQuery);
 		
 		ui = new Panel(fireWarningService.warningTextArea, airPollutionWarningService.warningTextArea, temperatureWarningService.warningTextArea, temperatureWidget, airPollutionWidget, firePresenceWidget);
+		ui.setBorder(new EmptyBorder(30, 30, 30, 30));
 	}
 	
 	public static void main(String[] args) {
 		Discoverer.start();
 		
 		App app = new App();
-
-		JFrame frame = new JFrame("ContextToolkit");
+		
+		JFrame frame = new JFrame("Ambient Awareness");
 		frame.add(app.ui);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(new Dimension(600, 400));
+		frame.setSize(new Dimension(800, 400));
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}

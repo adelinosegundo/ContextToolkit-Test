@@ -1,12 +1,14 @@
 package notification;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-public class EmailNotifier implements Notifier {
+public class EmailNotifier implements Observer {
 
 	@Override
-	public void sendNotification() {
-		System.out.println("Sended email");
+	public void update(Observable o, Object arg) {
+		System.out.println("Send email");
 	}
 
 }

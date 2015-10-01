@@ -24,8 +24,8 @@ public class Panel extends JPanel {
 	
 	private float fontSize = 20f;
 
-	public Panel(JLabel warningLabel, final Widget temperatureWidget, final Widget airPollutionWidget, final Widget firePresenceWidget) {			
-		setLayout(new GridLayout(4, 2)); // 3 rows, 2 columns
+	public Panel(JLabel fireWarningLabel, JLabel airPollutionWarningLabel, JLabel temperatureWarningLabel, final Widget temperatureWidget, final Widget airPollutionWidget, final Widget firePresenceWidget) {			
+		setLayout(new GridLayout(6, 2)); // 3 rows, 2 columns
 		
 		add(new JLabel(TemperatureWidget.TEMPERATURE) {{ setFont(getFont().deriveFont(fontSize)); }});
 		add(temperatureSlider = new JSlider(new DefaultBoundedRangeModel(0, 0, 0, 40)) {{
@@ -85,8 +85,13 @@ public class Panel extends JPanel {
 			setPaintLabels(true);
 		}});
 		
-		add(new JLabel(WarningWidget.WARNING) {{ setFont(getFont().deriveFont(fontSize)); }});
-		add(warningLabel);
+		add(new JLabel(WarningWidget.WARNING_FIRE) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(fireWarningLabel);
+		add(new JLabel(WarningWidget.WARNING_AIR_POLLUTION) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(airPollutionWarningLabel);
+		add(new JLabel(WarningWidget.WARNING_TEMPERATURE) {{ setFont(getFont().deriveFont(fontSize)); }});
+		add(temperatureWarningLabel);
+		
 		/*
 		 * Init state of widgets
 		 */

@@ -48,6 +48,7 @@ public class Panel extends JPanel {
 			setMajorTickSpacing(10);
 			setPaintTicks(true);
 			setPaintLabels(true);
+			setBorder(BorderFactory.createMatteBorder(20, 0, 20, 20, new Color(238, 238, 238)));
 			setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 		}});
 		add(temperatureWarningTextArea);		
@@ -92,6 +93,7 @@ public class Panel extends JPanel {
 			setMajorTickSpacing(1);
 			setPaintTicks(true);
 			setPaintLabels(true);
+			setBorder(BorderFactory.createMatteBorder(20, 0, 20, 20, new Color(238, 238, 238)));
 			setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 		}});
 		add(fireWarningTextArea);
